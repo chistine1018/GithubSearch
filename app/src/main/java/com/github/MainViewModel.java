@@ -2,14 +2,18 @@ package com.github;
 
 
 import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.github.util.SingleLiveEvent;
 
 public class MainViewModel extends ViewModel {
 
-    public final ObservableField<String> mData = new ObservableField<>();
-
     public final ObservableBoolean isLoading = new ObservableBoolean(false);
+
+    public final MutableLiveData<String> mData = new MutableLiveData<>();
+
+    public final SingleLiveEvent<String> toastText = new SingleLiveEvent<>();
 
     private DataModel dataModel = new DataModel();
 
@@ -21,7 +25,8 @@ public class MainViewModel extends ViewModel {
         dataModel.retrieveData(new DataModel.onDataReadyCallback() {
             @Override
             public void onDataReady(String data) {
-                mData.set(data);
+                mData.setValue(data);
+                toastText.setValue("下載完成");
                 isLoading.set(false);
             }
         });
