@@ -1,15 +1,18 @@
 package com.github;
 
+
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.ViewModel;
 
-public class MainViewModel {
+public class MainViewModel extends ViewModel {
 
     public final ObservableField<String> mData = new ObservableField<>();
 
     public final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private DataModel dataModel = new DataModel();
+
 
     public void refresh() {
 
