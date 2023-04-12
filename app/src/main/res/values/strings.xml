@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GithubSearch</string>
+    <string name="refresh">Refresh</string>
 </resources>
