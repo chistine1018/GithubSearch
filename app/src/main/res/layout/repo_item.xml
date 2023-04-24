@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ownerAvatar"
+                android:layout_width="@dimen/repo_item_image_size"
+                android:layout_height="@dimen/repo_item_image_size"
+                android:layout_marginStart="@dimen/default_margin"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="224dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toEndOf="@+id/ownerAvatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="repository name" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ownerAvatar"
+                tools:layout_editor_absoluteX="@dimen/default_margin"
+                tools:text="this is some description more description more description" />
+
+            <TextView
+                android:id="@+id/stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:drawableEnd="@android:drawable/btn_star"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
