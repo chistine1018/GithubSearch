@@ -77,17 +77,15 @@ public class RepoFragment extends Fragment {
             @Override
             public void onChanged(List<Repo> repos) {
                 repoAdpater.swapItems(repos);
+                viewModel.isLoading.set(false);
             }
         });
     }
 
     private void doSearch() {
         String query = binding.edtQuery.getText().toString();
-        if (TextUtils.isEmpty(query)) {
-            repoAdpater.clearItems();
-            return;
-        }
         viewModel.searchRepo(query);
+        viewModel.isLoading.set(true);
         dismissKeyboard();
     }
 

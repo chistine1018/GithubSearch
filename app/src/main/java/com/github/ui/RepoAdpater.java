@@ -32,7 +32,7 @@ public class RepoAdpater extends RecyclerView.Adapter<RepoAdpater.RepoViewHolder
             this.binding = binding;
         }
 
-        void bind(Repo repo){
+        void bind(Repo repo) {
             binding.setRepo(repo);
             binding.executePendingBindings();
         }
@@ -54,7 +54,7 @@ public class RepoAdpater extends RecyclerView.Adapter<RepoAdpater.RepoViewHolder
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items == null ? 0 : items.size();
     }
 
     void clearItems() {
@@ -64,10 +64,16 @@ public class RepoAdpater extends RecyclerView.Adapter<RepoAdpater.RepoViewHolder
     }
 
     void swapItems(List<Repo> newItems) {
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new RepoDiffCallback(this.items, newItems));
-        this.items.clear();
-        this.items.addAll(newItems);
-        result.dispatchUpdatesTo(this);
+        if (newItems == null) {
+            int oldSize = this.items.size();
+            this.items.clear();
+            notifyItemRangeRemoved(0, oldSize);
+        } else {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new RepoDiffCallback(this.items, newItems));
+            this.items.clear();
+            this.items.addAll(newItems);
+            result.dispatchUpdatesTo(this);
+        }
     }
 
     private class RepoDiffCallback extends DiffUtil.Callback {
