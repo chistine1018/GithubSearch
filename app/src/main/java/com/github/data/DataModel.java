@@ -4,8 +4,10 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.api.ApiResponse;
 import com.github.api.GithubService;
 import com.github.api.RetrofitManager;
 import com.github.data.model.Repo;
@@ -21,23 +23,7 @@ public class DataModel {
 
     private GithubService githubService = RetrofitManager.getAPI();
 
-    public MutableLiveData<List<Repo>> searchRepo(String query) {
-        final MutableLiveData<List<Repo>> repos = new MutableLiveData<>();
-        githubService.searchRepos(query).enqueue(new Callback<RepoSearchResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<RepoSearchResponse> call, @NonNull Response<RepoSearchResponse> response) {
-                repos.setValue(response.body().getItems());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<RepoSearchResponse> call, @NonNull Throwable t) {
-                //TODO: error handle
-            }
-        });
-        return repos;
-    }
-
-    public interface onDataReadyCallback {
-        void onDataReady(List<Repo> data);
+    public LiveData<ApiResponse<RepoSearchResponse>> searchRepo(String query) {
+        return githubService.searchRepos(query);
     }
 }
