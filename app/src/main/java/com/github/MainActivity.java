@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.github.api.GithubService;
+import com.github.di.Injectable;
 import com.github.ui.RepoFragment;
 import com.github.viewmodel.RepoViewModel;
 
@@ -23,7 +24,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MainActivity extends AppCompatActivity implements Injectable, HasSupportFragmentInjector {
 
     @Inject
     GithubService githubService;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (githubService != null) {

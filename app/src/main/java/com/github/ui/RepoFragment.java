@@ -23,6 +23,7 @@ import com.github.api.ApiResponse;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
 import com.github.databinding.RepoFragmentBinding;
+import com.github.di.Injectable;
 import com.github.viewmodel.GithubViewModelFactory;
 import com.github.viewmodel.RepoViewModel;
 
@@ -33,7 +34,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class RepoFragment extends Fragment {
+public class RepoFragment extends Fragment implements Injectable {
 
     public static final String TAG = "REPO";
 
@@ -50,11 +51,6 @@ public class RepoFragment extends Fragment {
         return new RepoFragment();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        AndroidSupportInjection.inject(this);
-    }
 
     @Nullable
     @Override

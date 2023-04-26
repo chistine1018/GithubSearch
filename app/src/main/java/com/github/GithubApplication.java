@@ -3,6 +3,7 @@ package com.github;
 import android.app.Activity;
 import android.app.Application;
 
+import com.github.di.AppInjector;
 import com.github.di.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -25,10 +26,7 @@ public class GithubApplication extends Application implements HasActivityInjecto
 
 
         // Dagger2
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this);
+        AppInjector.init(this);
     }
 
     @Override
