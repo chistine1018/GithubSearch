@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.github.di.AppInjector;
-import com.github.di.DaggerAppComponent;
 
 import javax.inject.Inject;
 

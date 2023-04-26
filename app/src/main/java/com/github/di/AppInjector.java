@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import com.github.GithubApplication;
 
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
 

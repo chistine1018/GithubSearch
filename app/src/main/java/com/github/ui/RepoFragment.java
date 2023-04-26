@@ -2,8 +2,6 @@ package com.github.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,26 +18,22 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.github.api.ApiResponse;
-import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
 import com.github.databinding.RepoFragmentBinding;
 import com.github.di.Injectable;
-import com.github.viewmodel.GithubViewModelFactory;
 import com.github.viewmodel.RepoViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.AndroidSupportInjection;
 
 public class RepoFragment extends Fragment implements Injectable {
 
     public static final String TAG = "REPO";
 
     @Inject
-    GithubViewModelFactory factory;
+    ViewModelProvider.Factory factory;
 
     private RepoFragmentBinding binding;
 

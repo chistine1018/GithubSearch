@@ -19,6 +19,8 @@ import com.github.util.AbsentLiveData;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class RepoViewModel extends ViewModel {
 
     public final ObservableBoolean isLoading = new ObservableBoolean(false);
@@ -29,7 +31,8 @@ public class RepoViewModel extends ViewModel {
 
     private DataModel dataModel;
 
-    public RepoViewModel(final DataModel dataModel) {
+    @Inject
+    public RepoViewModel(DataModel dataModel) {
         super();
         this.dataModel = dataModel;
         repos = Transformations.switchMap(query, new Function<String, LiveData<ApiResponse<RepoSearchResponse>>>() {
