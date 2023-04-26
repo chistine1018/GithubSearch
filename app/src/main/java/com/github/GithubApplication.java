@@ -3,6 +3,7 @@ package com.github;
 import android.app.Activity;
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.github.di.AppInjector;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ public class GithubApplication extends Application implements HasActivityInjecto
         super.onCreate();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
         }
 
 

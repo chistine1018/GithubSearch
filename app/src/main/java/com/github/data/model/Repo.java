@@ -1,14 +1,24 @@
 package com.github.data.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.Index;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Using name/owner_login as primary key instead of id since name/owner_login is always available
+ * vs id is not.
+ */
+@Entity(indices = {@Index("id"), @Index("owner_login")},
+        primaryKeys = {"name", "owner_login"})
 public class Repo {
 
     public final int id;
 
     @SerializedName("name")
+    @NonNull
     public final String name;
 
     @SerializedName("full_name")
@@ -21,6 +31,7 @@ public class Repo {
     public final int stars;
 
     @SerializedName("owner")
+    @Embedded(prefix = "owner_")
     @NonNull
     public final Owner owner;
 
