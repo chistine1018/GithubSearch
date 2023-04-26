@@ -23,21 +23,26 @@ public class RepoViewModel extends ViewModel {
 
     public final ObservableBoolean isLoading = new ObservableBoolean(false);
 
-    public final MutableLiveData<String> query = new MutableLiveData<>();
+    private final MutableLiveData<String> query = new MutableLiveData<>();
 
+    private final LiveData<ApiResponse<RepoSearchResponse>> repos;
 
-    private DataModel dataModel = new DataModel();
+    private DataModel dataModel;
 
-    private final LiveData<ApiResponse<RepoSearchResponse>> repos = Transformations.switchMap(query, new Function<String, LiveData<ApiResponse<RepoSearchResponse>>>() {
-        @Override
-        public LiveData<ApiResponse<RepoSearchResponse>> apply(String userInput) {
-            if (TextUtils.isEmpty(userInput)) {
-                return AbsentLiveData.create();
-            } else {
-                return dataModel.searchRepo(userInput);
+    public RepoViewModel(final DataModel dataModel) {
+        super();
+        this.dataModel = dataModel;
+        repos = Transformations.switchMap(query, new Function<String, LiveData<ApiResponse<RepoSearchResponse>>>() {
+            @Override
+            public LiveData<ApiResponse<RepoSearchResponse>> apply(String userInput) {
+                if (TextUtils.isEmpty(userInput)) {
+                    return AbsentLiveData.create();
+                } else {
+                    return dataModel.searchRepo(userInput);
+                }
             }
-        }
-    });
+        });
+    }
 
     public LiveData<ApiResponse<RepoSearchResponse>> getRepos() {
         return repos;

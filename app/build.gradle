@@ -77,10 +77,10 @@ dependencies {
     implementation "com.jakewharton.timber:timber:4.5.1"
 
     // Dagger core
-    implementation "com.google.dagger:dagger:2.14.1"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.14.1"
+    implementation "com.google.dagger:dagger:2.16"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.16"
     // Dagger android
-    implementation "com.google.dagger:dagger-android-support:2.14.1"
-    annotationProcessor "com.google.dagger:dagger-android-processor:2.14.1"
+    implementation "com.google.dagger:dagger-android-support:2.16"
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.16"
 
 }

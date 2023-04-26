@@ -16,20 +16,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.github.api.ApiResponse;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
 import com.github.databinding.RepoFragmentBinding;
+import com.github.viewmodel.GithubViewModelFactory;
 import com.github.viewmodel.RepoViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
+
 public class RepoFragment extends Fragment {
 
     public static final String TAG = "REPO";
+
+    @Inject
+    GithubViewModelFactory factory;
 
     private RepoFragmentBinding binding;
 
@@ -39,6 +48,12 @@ public class RepoFragment extends Fragment {
 
     public static RepoFragment newInstance() {
         return new RepoFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        AndroidSupportInjection.inject(this);
     }
 
     @Nullable
@@ -74,7 +89,7 @@ public class RepoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(RepoViewModel.class);
+        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel.class);
         binding.setViewModel(viewModel);
         viewModel.getRepos().observe(getViewLifecycleOwner(), new Observer<ApiResponse<RepoSearchResponse>>() {
             @Override
