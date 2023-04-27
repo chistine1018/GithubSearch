@@ -32,12 +32,14 @@ class AppModule {
     @Provides
     @Singleton
     GithubDb provideDb(GithubApplication application) {
-        return Room.databaseBuilder(application, GithubDb.class, "github.db").build();
+        return Room.databaseBuilder(application, GithubDb.class, "github.db")
+                .addMigrations(GithubDb.MIGRATION_1_2)
+                .build();
     }
 
     @Provides
     @Singleton
-    RepoDao provideRepoDao(GithubDb db){
+    RepoDao provideRepoDao(GithubDb db) {
         return db.repoDao();
     }
 }

@@ -23,8 +23,7 @@ public class Resource<T> {
         this.data = data;
         this.message = message;
     }
-
-    public static <T> Resource success(@Nullable T data) {
+    public static <T> Resource<T> success(@Nullable T data) {
         return new Resource(SUCCESS, data, null);
     }
 
