@@ -2,7 +2,6 @@ package com.github.viewmodel;
 
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.arch.core.util.Function;
 import androidx.databinding.ObservableBoolean;
@@ -12,9 +11,10 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.github.api.ApiResponse;
-import com.github.data.DataModel;
+import com.github.data.RepoRepository;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
+import com.github.data.model.Resource;
 import com.github.util.AbsentLiveData;
 
 import java.util.List;
@@ -27,27 +27,27 @@ public class RepoViewModel extends ViewModel {
 
     private final MutableLiveData<String> query = new MutableLiveData<>();
 
-    private final LiveData<ApiResponse<RepoSearchResponse>> repos;
+    private final LiveData<Resource<List<Repo>>> repos;
 
-    private DataModel dataModel;
+    private RepoRepository mRepoRepository;
 
     @Inject
-    public RepoViewModel(DataModel dataModel) {
+    public RepoViewModel(RepoRepository repoRepository) {
         super();
-        this.dataModel = dataModel;
-        repos = Transformations.switchMap(query, new Function<String, LiveData<ApiResponse<RepoSearchResponse>>>() {
+        this.mRepoRepository = repoRepository;
+        repos = Transformations.switchMap(query, new Function<String, LiveData<Resource<List<Repo>>>>() {
             @Override
-            public LiveData<ApiResponse<RepoSearchResponse>> apply(String userInput) {
+            public LiveData<Resource<List<Repo>>> apply(String userInput) {
                 if (TextUtils.isEmpty(userInput)) {
                     return AbsentLiveData.create();
                 } else {
-                    return dataModel.searchRepo(userInput);
+                    return repoRepository.search(userInput);
                 }
             }
         });
     }
 
-    public LiveData<ApiResponse<RepoSearchResponse>> getRepos() {
+    public LiveData<Resource<List<Repo>>> getRepos() {
         return repos;
     }
 

@@ -7,9 +7,11 @@
 
         <import type="android.view.View" />
 
+        <import type="com.github.data.model.Status" />
+
         <variable
-            name="viewModel"
-            type="com.github.viewmodel.RepoViewModel" />
+            name="resource"
+            type="com.github.data.model.Resource" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +63,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:visibleGone="@{viewModel.isLoading}" />
+            app:visibleGone="@{resource.status == Status.LOADING}" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

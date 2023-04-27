@@ -15,12 +15,12 @@ public class RepoSearchResult {
     @NonNull
     @PrimaryKey
     public final String query;
-    public final List<Integer> reopIds;
+    public final List<Integer> repoIds;
     public final int totalCount;
 
-    public RepoSearchResult(@NonNull String query, List<Integer> reopIds, int totalCount) {
+    public RepoSearchResult(@NonNull String query, List<Integer> repoIds, int totalCount) {
         this.query = query;
-        this.reopIds = reopIds;
+        this.repoIds = repoIds;
         this.totalCount = totalCount;
     }
 }
