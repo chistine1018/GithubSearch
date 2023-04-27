@@ -2,11 +2,14 @@ package com.github.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.github.data.model.Repo;
 import com.github.data.model.Resource;
+import com.github.data.model.Status;
 import com.github.databinding.RepoFragmentBinding;
 import com.github.di.Injectable;
 import com.github.viewmodel.RepoViewModel;
@@ -26,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 
 public class RepoFragment extends Fragment implements Injectable {
@@ -83,17 +89,26 @@ public class RepoFragment extends Fragment implements Injectable {
         viewModel.getRepos().observe(getViewLifecycleOwner(), new Observer<Resource<List<Repo>>>() {
             @Override
             public void onChanged(Resource<List<Repo>> resource) {
-                binding.setResource(resource);
-                binding.executePendingBindings();
-                repoAdapter.swapItems(resource.data);
+                Timber.e("status" + resource.status);
+                if (resource.status == Status.ERROR) {
+                    Toast.makeText(getContext(), "NetWork Fail", Toast.LENGTH_SHORT).show();
+                } else if (resource.status == Status.SUCCESS) {
+                    binding.setResource(resource);
+                    binding.executePendingBindings();
+                    repoAdapter.swapItems(resource.data);
+                }
             }
         });
     }
 
     private void doSearch() {
         String query = binding.edtQuery.getText().toString();
-        viewModel.searchRepo(query);
-        viewModel.isLoading.set(true);
+        if (TextUtils.isEmpty(query)) {
+            Toast.makeText(getContext(), "Empty", Toast.LENGTH_SHORT).show();
+            repoAdapter.clearItems();
+        } else {
+            viewModel.searchRepo(query);
+        }
         dismissKeyboard();
     }
 

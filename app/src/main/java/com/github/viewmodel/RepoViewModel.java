@@ -23,8 +23,6 @@ import javax.inject.Inject;
 
 public class RepoViewModel extends ViewModel {
 
-    public final ObservableBoolean isLoading = new ObservableBoolean(false);
-
     private final MutableLiveData<String> query = new MutableLiveData<>();
 
     private final LiveData<Resource<List<Repo>>> repos;
