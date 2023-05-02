@@ -24,8 +24,20 @@ android {
             }
         }
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
+
         renderscriptTargetApi 17
         renderscriptSupportModeEnabled true
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs +=
+                files("$projectDir/schemas".toString())
     }
 
     buildTypes {
@@ -87,7 +99,11 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    androidTestImplementation "android.arch.persistence.room:testing:1.0.0"
 
     // Stetho
     implementation "com.facebook.stetho:stetho:1.5.1"
+
+    // Gson, to prevent different gson version between libraries.
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
