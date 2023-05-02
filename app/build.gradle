@@ -71,6 +71,8 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.8.1'
     testImplementation "android.arch.core:core-testing:1.0.0"
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
+    testImplementation 'org.mockito:mockito-core:4.9.0'
 
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -112,4 +114,5 @@ dependencies {
 
     // Gson, to prevent different gson version between libraries.
     implementation 'com.google.code.gson:gson:2.8.2'
+
 }
