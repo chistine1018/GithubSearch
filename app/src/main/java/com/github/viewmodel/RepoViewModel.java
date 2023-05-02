@@ -36,7 +36,7 @@ public class RepoViewModel extends ViewModel {
         repos = Transformations.switchMap(query, new Function<String, LiveData<Resource<List<Repo>>>>() {
             @Override
             public LiveData<Resource<List<Repo>>> apply(String userInput) {
-                if (TextUtils.isEmpty(userInput)) {
+                if (TextUtils.isEmpty(userInput) || userInput == null) {
                     return AbsentLiveData.create();
                 } else {
                     return repoRepository.search(userInput);
