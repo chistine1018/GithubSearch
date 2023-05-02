@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.data.model.Owner;
 import com.github.data.model.Repo;
+import com.github.util.TestUtil;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class RepoDaoTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
-    
+
     private GithubDb db;
     private Repo repo;
 
@@ -38,7 +39,8 @@ public class RepoDaoTest {
                 GithubDb.class).build();
 
         Owner owner = new Owner("foo", null, null);
-        repo = new Repo(1, "foo", "foo/bar", "desc", 50, owner);
+//        repo = new Repo(1, "foo", "foo/bar", "desc", 50, owner);
+        repo = TestUtil.createRepo("foo", "bar", "desc");
     }
 
     @After
@@ -51,9 +53,9 @@ public class RepoDaoTest {
         // Insert repo
         db.repoDao().insert(repo);
         // Query repo
-        final Repo loaded = getValue(db.repoDao().load("foo", "foo"));
+        final Repo loaded = getValue(db.repoDao().load("foo", "bar"));
         // Assert query result
         assertThat(loaded.owner.login, is("foo"));
-        assertThat(loaded.name, is("foo"));
+        assertThat(loaded.name, is("bar"));
     }
 }
