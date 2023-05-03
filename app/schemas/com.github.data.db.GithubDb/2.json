@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "8ba1f860a23bf27ef655643685a17274",
+    "identityHash": "c49193c6ab1e16344f76456c344b34da",
     "entities": [
       {
         "tableName": "RepoSearchResult",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT, `descrption` TEXT, `stars` INTEGER NOT NULL, `html_url` TEXT, `owner_login` TEXT NOT NULL, `owner_avatarUrl` TEXT, `owner_url` TEXT, PRIMARY KEY(`name`, `owner_login`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT, `description` TEXT, `stars` INTEGER NOT NULL, `html_url` TEXT, `owner_login` TEXT NOT NULL, `owner_avatarUrl` TEXT, `owner_url` TEXT, PRIMARY KEY(`name`, `owner_login`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,8 +59,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "descrption",
-            "columnName": "descrption",
+            "fieldPath": "description",
+            "columnName": "description",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -125,7 +125,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8ba1f860a23bf27ef655643685a17274\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c49193c6ab1e16344f76456c344b34da\")"
     ]
   }
 }

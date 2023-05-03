@@ -25,7 +25,7 @@ public class Repo {
     public final String fullName;
 
     @SerializedName("description")
-    public final String descrption;
+    public final String description;
 
     @SerializedName("stargazers_count")
     public final int stars;
@@ -37,11 +37,11 @@ public class Repo {
 
     public String html_url;
 
-    public Repo(int id, String name, String fullName, String descrption, int stars, @NonNull Owner owner) {
+    public Repo(int id, String name, String fullName, String description, int stars, @NonNull Owner owner) {
         this.id = id;
         this.name = name;
         this.fullName = fullName;
-        this.descrption = descrption;
+        this.description = description;
         this.stars = stars;
         this.owner = owner;
     }
