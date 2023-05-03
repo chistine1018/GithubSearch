@@ -34,6 +34,7 @@ class AppModule {
     GithubDb provideDb(GithubApplication application) {
         return Room.databaseBuilder(application, GithubDb.class, "github.db")
                 .addMigrations(GithubDb.MIGRATION_1_2)
+                .addMigrations(GithubDb.MIGRATION_2_3)
                 .build();
     }
 

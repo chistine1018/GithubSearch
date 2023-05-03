@@ -12,7 +12,7 @@ import com.github.data.model.RepoSearchResult;
 /**
  * Main database description.
  */
-@Database(entities = {RepoSearchResult.class, Repo.class}, version = 2)
+@Database(entities = {RepoSearchResult.class, Repo.class}, version = 3)
 public abstract class GithubDb extends RoomDatabase {
     abstract public RepoDao repoDao();
 
@@ -20,6 +20,13 @@ public abstract class GithubDb extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL(" ALTER TABLE Repo" + " ADD COLUMN html_url TEXT");
+        }
+    };
+
+    public static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(" ALTER TABLE Repo" + " RENAME COLUMN descrption TO description");
         }
     };
 }
