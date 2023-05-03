@@ -92,7 +92,7 @@ public class RepoFragment extends Fragment implements Injectable {
                 Timber.e("status" + resource.status);
                 if (resource.status == Status.ERROR) {
                     Toast.makeText(getContext(), "NetWork Fail", Toast.LENGTH_SHORT).show();
-                } else if (resource.status == Status.SUCCESS) {
+                } else {
                     binding.setResource(resource);
                     binding.executePendingBindings();
                     repoAdapter.swapItems(resource.data);

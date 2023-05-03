@@ -73,9 +73,7 @@ public class RepoFragmentTest {
         onView(withId(R.id.btnSearch)).perform(click());
         verify(viewModel).searchRepo("foo");
         repos.postValue(Resource.<List<Repo>>loading(null));
-
-        //Anson bug
-        //onView(withId(R.id.progressBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.progressBar)).check(matches(isDisplayed()));
     }
 
     @Test
