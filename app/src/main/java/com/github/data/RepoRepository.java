@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import com.github.api.ApiResponse;
 import com.github.api.GithubService;
@@ -35,25 +37,25 @@ public class RepoRepository {
         this.githubService = githubService;
     }
 
-    public LiveData<Resource<List<Repo>>> search(final String query) {
-        return new NetworkBoundResource<List<Repo>, RepoSearchResponse>() {
+    public LiveData<Resource<PagedList<Repo>>> search(final String query) {
+        return new NetworkBoundResource<PagedList<Repo>, RepoSearchResponse>() {
             @NonNull
             @Override
-            protected LiveData<List<Repo>> loadFromDb() {
-                return Transformations.switchMap(repoDao.search(query), new Function<RepoSearchResult, LiveData<List<Repo>>>() {
+            protected LiveData<PagedList<Repo>> loadFromDb() {
+                return Transformations.switchMap(repoDao.search(query), new Function<RepoSearchResult, LiveData<PagedList<Repo>>>() {
                     @Override
-                    public LiveData<List<Repo>> apply(RepoSearchResult searchData) {
+                    public LiveData<PagedList<Repo>> apply(RepoSearchResult searchData) {
                         if (searchData == null) {
                             return AbsentLiveData.create();
                         } else {
-                            return repoDao.loadOrdered(searchData.repoIds);
+                            return new LivePagedListBuilder<>(repoDao.loadById(searchData.repoIds),30).build();
                         }
                     }
                 });
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<Repo> data) {
+            protected boolean shouldFetch(@Nullable PagedList<Repo> data) {
                 return data == null;
             }
 

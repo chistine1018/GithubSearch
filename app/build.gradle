@@ -119,4 +119,6 @@ dependencies {
     // Gson, to prevent different gson version between libraries.
     implementation 'com.google.code.gson:gson:2.8.2'
 
+    // Paging
+    implementation "android.arch.paging:runtime:1.0.0-alpha4-1"
 }

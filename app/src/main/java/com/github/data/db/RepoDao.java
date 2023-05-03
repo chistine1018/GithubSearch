@@ -5,6 +5,7 @@ import android.util.SparseIntArray;
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -41,30 +42,8 @@ public abstract class RepoDao {
     @Query("SELECT * FROM RepoSearchResult WHERE query = :query")
     public abstract LiveData<RepoSearchResult> search(String query);
 
-    public LiveData<List<Repo>> loadOrdered(List<Integer> repoIds) {
-        final SparseIntArray order = new SparseIntArray();
-        int index = 0;
-        for (Integer repoId : repoIds) {
-            order.put(repoId, index++);
-        }
-        return Transformations.map(loadById(repoIds), new Function<List<Repo>, List<Repo>>() {
-            @Override
-            public List<Repo> apply(List<Repo> repos) {
-                Collections.sort(repos, new Comparator<Repo>() {
-                    @Override
-                    public int compare(Repo r1, Repo r2) {
-                        int pos1 = order.get(r1.id);
-                        int pos2 = order.get(r2.id);
-                        return pos1 - pos2;
-                    }
-                });
-                return repos;
-            }
-        });
-    }
-
     @Query("SELECT * FROM Repo WHERE id in (:repoIds)")
-    protected abstract LiveData<List<Repo>> loadById(List<Integer> repoIds);
+    public abstract DataSource.Factory<Integer, Repo> loadById(List<Integer> repoIds);
 
     @Query("SELECT * FROM RepoSearchResult WHERE query = :query")
     public abstract RepoSearchResult findSearchResult(String query);

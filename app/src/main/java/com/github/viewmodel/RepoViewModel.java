@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.PagedList;
 
 import com.github.api.ApiResponse;
 import com.github.data.RepoRepository;
@@ -25,7 +26,7 @@ public class RepoViewModel extends ViewModel {
 
     private final MutableLiveData<String> query = new MutableLiveData<>();
 
-    private final LiveData<Resource<List<Repo>>> repos;
+    private final LiveData<Resource<PagedList<Repo>>> repos;
 
     private RepoRepository mRepoRepository;
 
@@ -33,9 +34,9 @@ public class RepoViewModel extends ViewModel {
     public RepoViewModel(RepoRepository repoRepository) {
         super();
         this.mRepoRepository = repoRepository;
-        repos = Transformations.switchMap(query, new Function<String, LiveData<Resource<List<Repo>>>>() {
+        repos = Transformations.switchMap(query, new Function<String, LiveData<Resource<PagedList<Repo>>>>() {
             @Override
-            public LiveData<Resource<List<Repo>>> apply(String userInput) {
+            public LiveData<Resource<PagedList<Repo>>> apply(String userInput) {
                 if (userInput == null || userInput.isEmpty()) {
                     return AbsentLiveData.create();
                 } else {
@@ -45,7 +46,7 @@ public class RepoViewModel extends ViewModel {
         });
     }
 
-    public LiveData<Resource<List<Repo>>> getRepos() {
+    public LiveData<Resource<PagedList<Repo>>> getRepos() {
         return repos;
     }
 
