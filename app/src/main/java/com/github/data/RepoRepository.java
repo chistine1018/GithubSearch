@@ -14,12 +14,16 @@ import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
 import com.github.data.model.RepoSearchResult;
 import com.github.data.model.Resource;
+import com.github.data.model.User;
 import com.github.util.AbsentLiveData;
 
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
+import retrofit2.Response;
 
 
 @Singleton
@@ -73,5 +77,13 @@ public class RepoRepository {
                 repoDao.insert(repoSearchResult);
             }
         }.asLiveData();
+    }
+
+    public Observable<Response<RepoSearchResponse>> searchRepoRX(String query) {
+        return githubService.searchReposRX(query);
+    }
+
+    public Observable<Response<User>> getUser(String login) {
+        return githubService.getUser(login);
     }
 }

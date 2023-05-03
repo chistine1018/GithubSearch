@@ -15,11 +15,15 @@ import com.github.data.RepoRepository;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
 import com.github.data.model.Resource;
+import com.github.data.model.User;
 import com.github.util.AbsentLiveData;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import retrofit2.Response;
 
 public class RepoViewModel extends ViewModel {
 
@@ -52,5 +56,13 @@ public class RepoViewModel extends ViewModel {
 
     public void searchRepo(String userInput) {
         query.setValue(userInput);
+    }
+
+    public Observable<Response<RepoSearchResponse>> searchRepoRX(String query) {
+        return mRepoRepository.searchRepoRX(query);
+    }
+
+    public Observable<Response<User>> getUser(String login) {
+        return mRepoRepository.getUser(login);
     }
 }

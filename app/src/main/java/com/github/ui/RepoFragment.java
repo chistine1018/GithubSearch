@@ -19,9 +19,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.github.api.RepoSearchResponseAndUser;
 import com.github.data.model.Repo;
+import com.github.data.model.RepoSearchResponse;
 import com.github.data.model.Resource;
 import com.github.data.model.Status;
+import com.github.data.model.User;
 import com.github.databinding.RepoFragmentBinding;
 import com.github.di.Injectable;
 import com.github.viewmodel.RepoViewModel;
@@ -31,6 +34,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import timber.log.Timber;
 
 
@@ -46,6 +58,8 @@ public class RepoFragment extends Fragment implements Injectable {
     private RepoViewModel viewModel;
 
     private RepoAdpater repoAdapter = new RepoAdpater(new ArrayList<>());
+
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     public static RepoFragment newInstance() {
         return new RepoFragment();
@@ -99,6 +113,9 @@ public class RepoFragment extends Fragment implements Injectable {
                 }
             }
         });
+        /***Anson Test RXJava***/
+//        zipExample();
+//        flatMapExample();
     }
 
     private void doSearch() {
@@ -110,6 +127,7 @@ public class RepoFragment extends Fragment implements Injectable {
             viewModel.searchRepo(query);
         }
         dismissKeyboard();
+
     }
 
     private void dismissKeyboard() {
@@ -118,5 +136,78 @@ public class RepoFragment extends Fragment implements Injectable {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void flatMapExample() {
+        String query = "android";
+        disposables.add(viewModel.searchRepoRX(query)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Function<Response<RepoSearchResponse>, ObservableSource<Repo>>() {
+                    @Override
+                    public ObservableSource<Repo> apply(Response<RepoSearchResponse> response) throws Exception {
+                        List<Repo> repos = response.body().getItems();
+                        return Observable.fromIterable(repos);
+                    }
+                })
+                .flatMap(new Function<Repo, ObservableSource<Response<User>>>() {
+                    @Override
+                    public ObservableSource<Response<User>> apply(Repo repo) throws Exception {
+                        return viewModel.getUser(repo.owner.login);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<Response<User>>() {
+                    @Override
+                    public void onNext(Response<User> response) {
+                        Timber.d("code " + response.code());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposables.clear();
+    }
+
+    private void zipExample() {
+        Observable.zip(viewModel.searchRepoRX("google"), viewModel.getUser("google"),
+                        new BiFunction<Response<RepoSearchResponse>, Response<User>, RepoSearchResponseAndUser>() {
+                            @Override
+                            public RepoSearchResponseAndUser apply(Response<RepoSearchResponse> response,
+                                                                   Response<User> response2) throws Exception {
+                                RepoSearchResponse repoSearchResponse = response.body();
+                                User user = response2.body();
+                                return new RepoSearchResponseAndUser(repoSearchResponse, user);
+                            }
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<RepoSearchResponseAndUser>() {
+                    @Override
+                    public void onNext(RepoSearchResponseAndUser repoSearchResponseAndUser) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.d("complete");
+                    }
+                });
     }
 }
