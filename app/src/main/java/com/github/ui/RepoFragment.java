@@ -86,6 +86,8 @@ public class RepoFragment extends Fragment implements Injectable {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
         viewModel.getRepos().observe(getViewLifecycleOwner(), new Observer<Resource<List<Repo>>>() {
             @Override
             public void onChanged(Resource<List<Repo>> resource) {
@@ -93,8 +95,6 @@ public class RepoFragment extends Fragment implements Injectable {
                 if (resource.status == Status.ERROR) {
                     Toast.makeText(getContext(), "NetWork Fail", Toast.LENGTH_SHORT).show();
                 } else {
-                    binding.setResource(resource);
-                    binding.executePendingBindings();
                     repoAdapter.swapItems(resource.data);
                 }
             }
