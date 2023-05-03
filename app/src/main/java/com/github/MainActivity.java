@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.api.GithubService;
@@ -46,6 +49,23 @@ public class MainActivity extends AppCompatActivity implements Injectable, HasSu
                     .add(R.id.container, fragment, tag)
                     .commit();
         }
+
+        /*** Anson Test Crashlytics ***/
+        Button crashButton = new Button(this);
+        crashButton.setText("Test Crash");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // Test algo crash
+                int a=0;
+                int b=a/a;
+                // Test Exception
+                throw new RuntimeException("Test Crash"); // Force a crash
+            }
+        });
+
+        addContentView(crashButton, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     @Override
