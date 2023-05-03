@@ -14,6 +14,7 @@ import com.github.api.ApiResponse;
 import com.github.data.RepoRepository;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
+import com.github.data.model.RepoSearchResult;
 import com.github.data.model.Resource;
 import com.github.data.model.User;
 import com.github.util.AbsentLiveData;
@@ -22,6 +23,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import retrofit2.Response;
 
@@ -64,5 +67,17 @@ public class RepoViewModel extends ViewModel {
 
     public Observable<Response<User>> getUser(String login) {
         return mRepoRepository.getUser(login);
+    }
+
+    public Flowable<RepoSearchResult> rxSearch(String query) {
+        return mRepoRepository.rxSearch(query);
+    }
+
+    public Flowable<List<Repo>> rxLoadById(List<Integer> repoIds) {
+        return mRepoRepository.rxLoadById(repoIds);
+    }
+
+    public Maybe<RepoSearchResult> rxSearchSync(String query) {
+        return mRepoRepository.rxSearchSync(query);
     }
 }

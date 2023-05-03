@@ -22,12 +22,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.github.api.RepoSearchResponseAndUser;
 import com.github.data.model.Repo;
 import com.github.data.model.RepoSearchResponse;
+import com.github.data.model.RepoSearchResult;
 import com.github.data.model.Resource;
 import com.github.data.model.Status;
 import com.github.data.model.User;
 import com.github.databinding.RepoFragmentBinding;
 import com.github.di.Injectable;
 import com.github.viewmodel.RepoViewModel;
+
+import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -209,5 +213,40 @@ public class RepoFragment extends Fragment implements Injectable {
                         Timber.d("complete");
                     }
                 });
+    }
+
+    private void rxDoSearch() {
+        String query = binding.edtQuery.getText().toString();
+        viewModel.rxSearch(query)
+                .flatMap(new Function<RepoSearchResult, Publisher<List<Repo>>>() {
+                    @Override
+                    public Publisher<List<Repo>> apply(RepoSearchResult result) throws Exception {
+                        return viewModel.rxLoadById(result.repoIds);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSubscriber<List<Repo>>() {
+                    @Override
+                    public void onNext(List<Repo> repos) {
+                        repoAdapter.swapItems(repos);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        dismissKeyboard();
+    }
+
+    private void syncQueryExample() {
+        RepoSearchResult result = viewModel.rxSearchSync("android")
+                .subscribeOn(Schedulers.io())
+                .blockingGet();
     }
 }
